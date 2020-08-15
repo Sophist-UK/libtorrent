@@ -167,27 +167,7 @@ rule libtorrent_linking ( properties * )
 	return $(result) ;
 }
 
-# this is a copy of the rule from boost-build's python-extension, but without
-# specifying <suppress-import-lib>no as a mandatory property. That property
-# would otherwise cause build failures because it suppresses linking against the
-# runtime library and kernel32 on windows
-
-rule my-python-extension ( name : sources * : requirements * : default-build * :
-	usage-requirements * )
-{
-	requirements += <use>/python//python_for_extensions ;
-
-	local project = [ project.current ] ;
-
-	targets.main-target-alternative
-		[ new typed-target $(name) : $(project) : PYTHON_EXTENSION
-			: [ targets.main-target-sources $(sources) : $(name) ]
-			: [ targets.main-target-requirements $(requirements) : $(project) ]
-			: [ targets.main-target-default-build $(default-build) : $(project) ]
-		] ;
-}
-
-my-python-extension libtorrent
+python-extension libtorrent
 	: # sources
 	src/module.cpp
 	src/sha1_hash.cpp
